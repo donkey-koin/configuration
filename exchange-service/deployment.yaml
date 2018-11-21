@@ -1,0 +1,21 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: exchange-service-deployment
+  labels:
+    app: exchange-service
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: exchange-service
+  template:
+    metadata:
+      labels:
+        app: exchange-service
+    spec:
+      containers:
+      - name: exchange-service
+        image: localhost:6000/donkey-koin/exchange-service:latest
+        ports:
+        - containerPort: 8080
