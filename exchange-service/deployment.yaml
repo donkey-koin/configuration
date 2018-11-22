@@ -1,7 +1,7 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: exchange-service-deployment
+  name: exchange-service
   labels:
     app: exchange-service
 spec:

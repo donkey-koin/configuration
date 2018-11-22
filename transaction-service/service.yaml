@@ -1,0 +1,11 @@
+kind: Service
+apiVersion: v1
+metadata:
+  name: transaction-service-svc
+spec:
+  selector:
+    app: transaction-service
+  ports:
+  - protocol: TCP
+    port: 8080
+    targetPort: 8090
