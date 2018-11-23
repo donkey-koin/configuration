@@ -1,12 +1,51 @@
 #!/bin/bash
 
+function deploy_ui {
+    echo "--------------------------DEPLOYING UI-----------------------------"
+    echo "Building and pushing docker image..."    
+    cd ui/build
+    docker build . -t donkey-koin/ui:latest
+    docker tag donkey-koin/ui:latest localhost:6000/donkey-koin/ui:latest
+    docker push localhost:6000/donkey-koin/ui:latest
+    cd ..
+
+    echo "Applying k8s resources..."    
+    kubectl delete --ignore-not-found -f deployment.yaml -n donkey-koin
+    kubectl apply -f deployment.yaml -n donkey-koin
+    kubectl apply -f service.yaml -n donkey-koin
+    echo "------------------------------------------------------------------"
+    echo "UI deployed successfully!"
+    echo "------------------------------------------------------------------"
+    cd $ROOT_DIRECTORY
+}
+
+function deploy_orchestration {
+    echo "------------------DEPLOYING ORCHESTRATION--------------------------"
+    # echo "Building and pushing docker image..."    
+    # cd orchestration/build
+    # docker build . -t donkey-koin/orchestration:latest
+    # docker tag donkey-koin/orchestration:latest localhost:6000/donkey-koin/orchestration:latest
+    # docker push localhost:6000/donkey-koin/orchestration:latest
+    # cd ..
+
+    echo "Applying k8s resources..." 
+    cd orchestration   
+    kubectl delete --ignore-not-found -f deployment.yaml -n donkey-koin
+    kubectl apply -f deployment.yaml -n donkey-koin
+    kubectl apply -f service.yaml -n donkey-koin
+    echo "------------------------------------------------------------------"
+    echo "Orchestration deployed successfully!"
+    echo "------------------------------------------------------------------"
+    cd $ROOT_DIRECTORY
+}
+
 function deploy_exchange {
     echo "------------------DEPLOYING EXCHANGE SERVICE----------------------"
     echo "Building and pushing docker image..."    
     cd exchange-service/build
-    docker build . -t donkey-koin/exchange-service
-    docker tag donkey-koin/exchange-service localhost:6000/donkey-koin/exchange-service
-    docker push localhost:6000/donkey-koin/exchange-service
+    docker build . -t donkey-koin/exchange-service:latest
+    docker tag donkey-koin/exchange-service:latest localhost:6000/donkey-koin/exchange-service:latest
+    docker push localhost:6000/donkey-koin/exchange-service:latest
 
     echo "Applying k8s resources..."    
     cd ..
@@ -15,7 +54,6 @@ function deploy_exchange {
     kubectl apply -f service.yaml -n donkey-koin
     echo "------------------------------------------------------------------"
     echo "Exchange service deployed successfully!"
-    cd ..
     echo "------------------------------------------------------------------"
     cd $ROOT_DIRECTORY
 }
@@ -24,9 +62,9 @@ function deploy_transaction {
     echo "------------------DEPLOYING TRANSACTION SERVICE-------------------"
     echo "Building and pushing docker image..."    
     cd transaction-service/build
-    docker build . -t donkey-koin/transaction-service
-    docker tag donkey-koin/transaction-service localhost:6000/donkey-koin/transaction-service
-    docker push localhost:6000/donkey-koin/transaction-service
+    docker build . -t donkey-koin/transaction-service:latest
+    docker tag donkey-koin/transaction-service:latest localhost:6000/donkey-koin/transaction-service:latest
+    docker push localhost:6000/donkey-koin/transaction-service:latest
     cd ..
 
     echo "Applying k8s resources for mongodb..."  
@@ -43,7 +81,6 @@ function deploy_transaction {
     kubectl delete --ignore-not-found -f deployment.yaml -n donkey-koin
     kubectl apply -f deployment.yaml -n donkey-koin
     kubectl apply -f service.yaml -n donkey-koin
-    cd ..
     echo "------------------------------------------------------------------"
     echo "Transaction service deployed successfully!"
     echo "------------------------------------------------------------------"
@@ -106,11 +143,11 @@ echo "------------------------------------------------------------------"
 echo "------------------------------------------------------------------"
 
 if [ $UI = true ]; then
-    echo "TBC"
+    deploy_ui
 fi
 
 if [ $ORCHESTRATION = true ]; then
-    echo "TBC"
+    deploy_orchestration
 fi
 
 if [ $EXCHANGE_SERVICE = true ]; then
