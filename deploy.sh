@@ -2,20 +2,12 @@
 
 function deploy_ui {
     echo "--------------------------DEPLOYING UI-----------------------------"
-<<<<<<< HEAD
-    echo "Building and pushing docker image..."    
-    cd $ROOT_DIRECTORY/ui/build
-    docker build . -t donkey-koin/ui:latest
-    docker tag donkey-koin/ui:latest localhost:6000/donkey-koin/ui:latest
-    docker push localhost:6000/donkey-koin/ui:latest
-=======
     # echo "Building and pushing docker image..."    
     cd ui
     # docker build . -t donkey-koin/ui:latest
     # docker tag donkey-koin/ui:latest localhost:6000/donkey-koin/ui:latest
     # docker push localhost:6000/donkey-koin/ui:latest
     # cd ..
->>>>>>> epyepy registry
 
     echo "Applying k8s resources..."    
     cd $ROOT_DIRECTORY/ui
@@ -48,16 +40,6 @@ function deploy_orchestration {
 
 function deploy_exchange {
     echo "------------------DEPLOYING EXCHANGE SERVICE----------------------"
-<<<<<<< HEAD
-    echo "Building and pushing docker image..."    
-    cd $ROOT_DIRECTORY/exchange-service/build
-    docker build . -t donkey-koin/exchange-service:latest
-    docker tag donkey-koin/exchange-service:latest localhost:6000/donkey-koin/exchange-service:latest
-    docker push localhost:6000/donkey-koin/exchange-service:latest
-
-    echo "Applying k8s resources..."    
-    cd $ROOT_DIRECTORY/exchange-service
-=======
     # echo "Building and pushing docker image..."    
     cd exchange-service
     # docker build . -t donkey-koin/exchange-service:latest
@@ -66,7 +48,6 @@ function deploy_exchange {
 
     echo "Applying k8s resources..."    
     # cd ..
->>>>>>> epyepy registry
     kubectl delete --ignore-not-found -f deployment.yaml -n donkey-koin
     kubectl apply -f deployment.yaml -n donkey-koin
     kubectl apply -f service.yaml -n donkey-koin
@@ -77,20 +58,12 @@ function deploy_exchange {
 
 function deploy_transaction {
     echo "------------------DEPLOYING TRANSACTION SERVICE-------------------"
-<<<<<<< HEAD
-    echo "Building and pushing docker image..."    
-    cd $ROOT_DIRECTORY/transaction-service/build
-    docker build . -t donkey-koin/transaction-service:latest
-    docker tag donkey-koin/transaction-service:latest localhost:6000/donkey-koin/transaction-service:latest
-    docker push localhost:6000/donkey-koin/transaction-service:latest
-=======
     # echo "Building and pushing docker image..."    
     cd transaction-service
     # docker build . -t donkey-koin/transaction-service:latest
     # docker tag donkey-koin/transaction-service:latest localhost:6000/donkey-koin/transaction-service:latest
     # docker push localhost:6000/donkey-koin/transaction-service:latest
     # cd ..
->>>>>>> epyepy registry
 
     echo "Applying k8s resources for mongodb..."  
     cd $ROOT_DIRECTORY/transaction-service/dependencies
