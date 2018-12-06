@@ -66,15 +66,16 @@ function deploy_transaction {
     # cd ..
 
     echo "Applying k8s resources for mongodb..."  
-    cd $ROOT_DIRECTORY/transaction-service/dependencies
-    kubectl delete --ignore-not-found -f mongo-db-deployment.yaml -n donkey-koin
-    kubectl apply -f mongo-pv.yaml -n donkey-koin
-    kubectl apply -f mongo-db-deployment.yaml -n donkey-koin
-    kubectl apply -f mongo-db-service.yaml -n donkey-koin
-    echo "Mongo deployed successfully!"
-    echo "------------------------------------------------------------------"
+    # cd $ROOT_DIRECTORY/transaction-service/dependencies
+    # kubectl delete --ignore-not-found -f mongo-db-deployment.yaml -n donkey-koin
+    # kubectl apply -f mongo-pv.yaml -n donkey-koin
+    # kubectl apply -f mongo-db-deployment.yaml -n donkey-koin
+    # kubectl apply -f mongo-db-service.yaml -n donkey-koin
+    # echo "Mongo deployed successfully!"
+    # echo "------------------------------------------------------------------"
 
     echo "Applying k8s resources for transaction service..."    
+    cd $ROOT_DIRECTORY/transaction-service/
     kubectl delete --ignore-not-found -f deployment.yaml -n donkey-koin
     kubectl apply -f deployment.yaml -n donkey-koin
     kubectl apply -f service.yaml -n donkey-koin
