@@ -1,0 +1,1 @@
+kubectl port-forward --namespace donkey-koin $(kubectl get po -n donkey-koin | grep orchestration | awk '{print $1;}') 5000:5000
