@@ -16,6 +16,6 @@ spec:
     spec:
       containers:
       - name: orchestration
-        image: localhost:6000/donkey-koin/orchestration:latest
+        image: epyepy/orchestration:latest
         ports:
         - containerPort: 5000

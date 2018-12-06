@@ -16,6 +16,6 @@ spec:
     spec:
       containers:
       - name: exchange-service
-        image: localhost:6000/donkey-koin/exchange-service:latest
+        image: epyepy/exchange-service:latest
         ports:
         - containerPort: 8080

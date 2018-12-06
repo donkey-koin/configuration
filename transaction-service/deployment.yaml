@@ -16,6 +16,6 @@ spec:
     spec:
       containers:
       - name: transaction-service
-        image: localhost:6000/donkey-koin/transaction-service:latest
+        image: epyepy/transaction-service:latest
         ports:
         - containerPort: 8090
