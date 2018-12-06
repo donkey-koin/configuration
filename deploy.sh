@@ -47,7 +47,7 @@ function deploy_exchange {
     # docker push localhost:6000/donkey-koin/exchange-service:latest
 
     echo "Applying k8s resources..."    
-    cd $ROOT_DIRECTORY/orchestration   
+    cd $ROOT_DIRECTORY/exchange-service   
     kubectl delete --ignore-not-found -f deployment.yaml -n donkey-koin
     kubectl apply -f deployment.yaml -n donkey-koin
     kubectl apply -f service.yaml -n donkey-koin
