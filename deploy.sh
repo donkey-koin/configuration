@@ -3,7 +3,7 @@
 function deploy_ui {
     echo "--------------------------DEPLOYING UI-----------------------------"
     # echo "Building and pushing docker image..."    
-    cd ui
+    # cd ui
     # docker build . -t donkey-koin/ui:latest
     # docker tag donkey-koin/ui:latest localhost:6000/donkey-koin/ui:latest
     # docker push localhost:6000/donkey-koin/ui:latest
@@ -22,14 +22,14 @@ function deploy_ui {
 function deploy_orchestration {
     echo "------------------DEPLOYING ORCHESTRATION--------------------------"
     # echo "Building and pushing docker image..."    
-    # cd orchestrations
+    cd orchestration
     # docker build . -t donkey-koin/orchestration:latest
     # docker tag donkey-koin/orchestration:latest localhost:6000/donkey-koin/orchestration:latest
     # docker push localhost:6000/donkey-koin/orchestration:latest
     # cd ..
 
     echo "Applying k8s resources..." 
-    cd $ROOT_DIRECTORY/orchestration   
+    # cd $ROOT_DIRECTORY/orchestration   
     kubectl delete --ignore-not-found -f deployment.yaml -n donkey-koin
     kubectl apply -f deployment.yaml -n donkey-koin
     kubectl apply -f service.yaml -n donkey-koin
