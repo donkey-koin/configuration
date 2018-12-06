@@ -3,20 +3,19 @@
 function deploy_ui {
     echo "--------------------------DEPLOYING UI-----------------------------"
     echo "Building and pushing docker image..."    
-    cd ui/build
+    cd $ROOT_DIRECTORY/ui/build
     docker build . -t donkey-koin/ui:latest
     docker tag donkey-koin/ui:latest localhost:6000/donkey-koin/ui:latest
     docker push localhost:6000/donkey-koin/ui:latest
-    cd ..
 
     echo "Applying k8s resources..."    
+    cd $ROOT_DIRECTORY/ui
     kubectl delete --ignore-not-found -f deployment.yaml -n donkey-koin
     kubectl apply -f deployment.yaml -n donkey-koin
     kubectl apply -f service.yaml -n donkey-koin
     echo "------------------------------------------------------------------"
     echo "UI deployed successfully!"
     echo "------------------------------------------------------------------"
-    cd $ROOT_DIRECTORY
 }
 
 function deploy_orchestration {
@@ -29,52 +28,48 @@ function deploy_orchestration {
     # cd ..
 
     echo "Applying k8s resources..." 
-    cd orchestration   
+    cd $ROOT_DIRECTORY/orchestration   
     kubectl delete --ignore-not-found -f deployment.yaml -n donkey-koin
     kubectl apply -f deployment.yaml -n donkey-koin
     kubectl apply -f service.yaml -n donkey-koin
     echo "------------------------------------------------------------------"
     echo "Orchestration deployed successfully!"
     echo "------------------------------------------------------------------"
-    cd $ROOT_DIRECTORY
 }
 
 function deploy_exchange {
     echo "------------------DEPLOYING EXCHANGE SERVICE----------------------"
     echo "Building and pushing docker image..."    
-    cd exchange-service/build
+    cd $ROOT_DIRECTORY/exchange-service/build
     docker build . -t donkey-koin/exchange-service:latest
     docker tag donkey-koin/exchange-service:latest localhost:6000/donkey-koin/exchange-service:latest
     docker push localhost:6000/donkey-koin/exchange-service:latest
 
     echo "Applying k8s resources..."    
-    cd ..
+    cd $ROOT_DIRECTORY/exchange-service
     kubectl delete --ignore-not-found -f deployment.yaml -n donkey-koin
     kubectl apply -f deployment.yaml -n donkey-koin
     kubectl apply -f service.yaml -n donkey-koin
     echo "------------------------------------------------------------------"
     echo "Exchange service deployed successfully!"
     echo "------------------------------------------------------------------"
-    cd $ROOT_DIRECTORY
 }
 
 function deploy_transaction {
     echo "------------------DEPLOYING TRANSACTION SERVICE-------------------"
     echo "Building and pushing docker image..."    
-    cd transaction-service/build
+    cd $ROOT_DIRECTORY/transaction-service/build
     docker build . -t donkey-koin/transaction-service:latest
     docker tag donkey-koin/transaction-service:latest localhost:6000/donkey-koin/transaction-service:latest
     docker push localhost:6000/donkey-koin/transaction-service:latest
-    cd ..
 
     echo "Applying k8s resources for mongodb..."  
-    cd dependencies  
+    cd $ROOT_DIRECTORY/transaction-service/dependencies
     kubectl delete --ignore-not-found -f mongo-db-deployment.yaml -n donkey-koin
     kubectl apply -f mongo-pv.yaml -n donkey-koin
     kubectl apply -f mongo-db-deployment.yaml -n donkey-koin
     kubectl apply -f mongo-db-service.yaml -n donkey-koin
     echo "Mongo deployed successfully!"
-    cd ..
     echo "------------------------------------------------------------------"
 
     echo "Applying k8s resources for transaction service..."    
@@ -84,7 +79,11 @@ function deploy_transaction {
     echo "------------------------------------------------------------------"
     echo "Transaction service deployed successfully!"
     echo "------------------------------------------------------------------"
-    cd $ROOT_DIRECTORY
+}
+
+function create_namespace {
+    cd $ROOT_DIRECTORY/infra
+    kubectl apply -f namespace.yaml
 }
 
 EXCHANGE_SERVICE=false
@@ -141,6 +140,8 @@ echo "Deploying transaction service $TRANSACTION_SERVICE"
 echo "Deploying exchange service: $EXCHANGE_SERVICE"
 echo "------------------------------------------------------------------"
 echo "------------------------------------------------------------------"
+
+create_namespace
 
 if [ $UI = true ]; then
     deploy_ui
