@@ -22,14 +22,14 @@ function deploy_ui {
 function deploy_orchestration {
     echo "------------------DEPLOYING ORCHESTRATION--------------------------"
     # echo "Building and pushing docker image..."    
-    cd orchestration
+    # cd orchestration
     # docker build . -t donkey-koin/orchestration:latest
     # docker tag donkey-koin/orchestration:latest localhost:6000/donkey-koin/orchestration:latest
     # docker push localhost:6000/donkey-koin/orchestration:latest
     # cd ..
 
     echo "Applying k8s resources..." 
-    # cd $ROOT_DIRECTORY/orchestration   
+    cd $ROOT_DIRECTORY/orchestration   
     kubectl delete --ignore-not-found -f deployment.yaml -n donkey-koin
     kubectl apply -f deployment.yaml -n donkey-koin
     kubectl apply -f service.yaml -n donkey-koin
@@ -41,13 +41,13 @@ function deploy_orchestration {
 function deploy_exchange {
     echo "------------------DEPLOYING EXCHANGE SERVICE----------------------"
     # echo "Building and pushing docker image..."    
-    cd exchange-service
+    # cd exchange-service
     # docker build . -t donkey-koin/exchange-service:latest
     # docker tag donkey-koin/exchange-service:latest localhost:6000/donkey-koin/exchange-service:latest
     # docker push localhost:6000/donkey-koin/exchange-service:latest
 
     echo "Applying k8s resources..."    
-    # cd ..
+    cd $ROOT_DIRECTORY/orchestration   
     kubectl delete --ignore-not-found -f deployment.yaml -n donkey-koin
     kubectl apply -f deployment.yaml -n donkey-koin
     kubectl apply -f service.yaml -n donkey-koin
@@ -59,7 +59,7 @@ function deploy_exchange {
 function deploy_transaction {
     echo "------------------DEPLOYING TRANSACTION SERVICE-------------------"
     # echo "Building and pushing docker image..."    
-    cd transaction-service
+    # cd transaction-service
     # docker build . -t donkey-koin/transaction-service:latest
     # docker tag donkey-koin/transaction-service:latest localhost:6000/donkey-koin/transaction-service:latest
     # docker push localhost:6000/donkey-koin/transaction-service:latest
