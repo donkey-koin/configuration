@@ -72,7 +72,8 @@ function deploy_transaction {
     echo "Mongo deployed successfully!"
     echo "------------------------------------------------------------------"
 
-    echo "Applying k8s resources for transaction service..."    
+    echo "Applying k8s resources for transaction service..."   
+    cd $ROOT_DIRECTORY/transaction-service 
     kubectl delete --ignore-not-found -f deployment.yaml -n donkey-koin
     kubectl apply -f deployment.yaml -n donkey-koin
     kubectl apply -f service.yaml -n donkey-koin
